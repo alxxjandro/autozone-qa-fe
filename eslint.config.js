@@ -6,9 +6,13 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import importPlugin from 'eslint-plugin-import'
 import prettier from 'eslint-config-prettier'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const headerRule = require('./eslint-rules/header-comment.cjs')
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', 'eslint.config.js'] },
+  { ignores: ['dist', 'node_modules', 'eslint.config.js', '**/*.cjs', '__mocks__/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
@@ -26,6 +30,7 @@ export default tseslint.config(
       'jsx-a11y': jsxA11y,
       'simple-import-sort': simpleImportSort,
       import: importPlugin,
+      'local-rules': { rules: { 'header-comment': headerRule } },
     },
     settings: {
       react: { version: 'detect' },
@@ -34,10 +39,9 @@ export default tseslint.config(
       ...reactPlugin.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.configs.recommended.rules,
-
       eqeqeq: ['error', 'always'],
       'prefer-const': 'error',
-      'no-console': 'warn',
+      'no-console': 'error',
       'no-debugger': 'error',
       'no-var': 'error',
       'no-implicit-coercion': 'error',
@@ -50,7 +54,7 @@ export default tseslint.config(
       'import/first': 'error',
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
-      'no-console': 'error',
+      'local-rules/header-comment': 'error',
     },
   },
   prettier
