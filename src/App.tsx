@@ -363,6 +363,7 @@ function App() {
           </div>
         </Section>
 
+        <h1>Hector estuvo aqui!</h1>
         <div className="footer">Página temporal · Pipeline CI/CD — TC3005B GPO500 2026</div>
       </div>
     </>
