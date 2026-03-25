@@ -5,6 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import importPlugin from 'eslint-plugin-import'
+import prettierPlugin from 'eslint-plugin-prettier'
 import prettier from 'eslint-config-prettier'
 import { createRequire } from 'module'
 
@@ -30,6 +31,7 @@ export default tseslint.config(
       'jsx-a11y': jsxA11y,
       'simple-import-sort': simpleImportSort,
       import: importPlugin,
+      prettier: prettierPlugin,
       'local-rules': { rules: { 'header-comment': headerRule } },
     },
     settings: {
@@ -54,6 +56,7 @@ export default tseslint.config(
       'import/first': 'error',
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
+      'prettier/prettier': 'error',
       'local-rules/header-comment': 'error',
     },
   },
