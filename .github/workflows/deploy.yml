@@ -40,7 +40,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy autozone-qa-fe-${{ github.event.inputs.environment }} \
-            --image=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe:${{ github.event.inputs.version }} \
+            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe:${{ github.event.inputs.environment }}-${{ github.event.inputs.version }}
             --region=us-central1 \
             --platform=managed \
             --allow-unauthenticated \

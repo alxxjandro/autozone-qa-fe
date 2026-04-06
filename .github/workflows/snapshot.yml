@@ -50,16 +50,24 @@ jobs:
 
       - name: Build Docker image
         run: |
+          IMAGE_BASE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe
+          ENVIRONMENT=${{ github.event.inputs.environment }}
+          VERSION=${{ github.event.inputs.version }}
+
           docker build \
-            --build-arg VITE_ENV=${{ github.event.inputs.environment }} \
+            --build-arg VITE_ENV=$ENVIRONMENT \
             --build-arg VITE_API_URL_LOCAL=http://localhost:8080/api \
             --build-arg VITE_API_URL_DEV=https://autozone-qa-be-dev-460642913845.us-central1.run.app/api \
             --build-arg VITE_API_URL_UAT=https://autozone-qa-be-uat-460642913845.us-central1.run.app/api \
-            -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe:${{ github.event.inputs.version }} \
-            -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe:latest \
+            -t $IMAGE_BASE:$ENVIRONMENT-$VERSION \
+            -t $IMAGE_BASE:$ENVIRONMENT-latest \
             .
 
       - name: Push Docker image
         run: |
-          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe:${{ github.event.inputs.version }}
-          docker push us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe:latest
+          IMAGE_BASE=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/autozone-qa-repo/autozone-qa-fe
+          ENVIRONMENT=${{ github.event.inputs.environment }}
+          VERSION=${{ github.event.inputs.version }}
+
+          docker push $IMAGE_BASE:$ENVIRONMENT-$VERSION
+          docker push $IMAGE_BASE:$ENVIRONMENT-latest
