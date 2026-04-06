@@ -5,12 +5,15 @@
  * Autozone QA Automation
  */
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import App from '../App'
 
 describe('App', () => {
-  it('renders without crashing', () => {
+  it('renders without crashing', async () => {
     render(<App />)
-    expect(document.body).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(document.body).toBeInTheDocument()
+    })
   })
 })

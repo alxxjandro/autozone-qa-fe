@@ -2,11 +2,9 @@ module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'],
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.cjs',
   },
-  testMatch: [
-    '**/tests/**/*.test.ts',
-    '**/tests/**/*.test.tsx',
-  ],
-};
+  testMatch: ['**/tests/**/*.test.ts', '**/tests/**/*.test.tsx'],
+}
