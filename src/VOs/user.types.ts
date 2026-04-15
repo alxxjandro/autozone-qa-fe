@@ -9,6 +9,7 @@
  * Interfaz describiendo un
  * User como estructura de datos
  */
+
 export interface User {
   id: number
   name: string

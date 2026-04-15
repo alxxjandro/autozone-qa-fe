@@ -9,6 +9,7 @@
  * Interfaz para un request
  * response error generico
  */
+
 export interface ErrorResponse {
   status: number
   message: string
