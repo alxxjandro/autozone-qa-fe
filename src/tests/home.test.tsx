@@ -5,8 +5,8 @@
  * Autozone QA Automation
  */
 
-import { Home } from '@/pages/home/Home'
 import { render, waitFor } from '@testing-library/react'
+import { Home } from '@/pages/home/Home'
 
 describe('Home', () => {
   it('renders without crashing', async () => {
