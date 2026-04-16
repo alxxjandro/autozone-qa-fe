@@ -6,11 +6,11 @@
  */
 
 import { render, waitFor } from '@testing-library/react'
-import App from '../App'
+import { Home } from '@/pages/home/Home'
 
-describe('App', () => {
+describe('Home', () => {
   it('renders without crashing', async () => {
-    render(<App />)
+    render(<Home />)
 
     await waitFor(() => {
       expect(document.body).toBeInTheDocument()

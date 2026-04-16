@@ -5,19 +5,17 @@
  * Autozone QA Automation
  */
 
+import '@mantine/core/styles.css'
+import { MantineProvider } from '@mantine/core'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from 'react-router'
-import App from './App.tsx'
-import Releases from './releases/Releases.tsx'
+import { RouterProvider } from 'react-router'
+import { router } from './router' // Import the router configuration
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route Component={App} path="/" />
-        <Route Component={Releases} path="/releases" />
-      </Routes>
-    </BrowserRouter>
+    <MantineProvider>
+      <RouterProvider router={router} />
+    </MantineProvider>
   </StrictMode>
 )
