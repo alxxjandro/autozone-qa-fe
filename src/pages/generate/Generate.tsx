@@ -6,10 +6,5 @@
  */
 
 export function Generate() {
-    return (
-        <div>
-            Generate
-        </div>
-    )
+  return <div>Generate</div>
 }
-

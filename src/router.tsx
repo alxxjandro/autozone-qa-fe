@@ -1,21 +1,20 @@
 /*
  * Tecnológico de Monterrey — Campus Chihuahua
  * Desarrollo e Implantación de Sistemas de Software
- * TC3005B GP0500 - 2026
+ * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
 
-import { createBrowserRouter } from 'react-router';
-
+import { createBrowserRouter } from 'react-router'
 // Importación del Layout principal y las páginas (Vistas)
-import { MainLayout } from './components/layout/MainLayout/MainLayout';
-import { Releases } from './pages/releases/Releases';
-import { Home } from './pages/home/Home';
-import { TestCases } from './pages/tests-cases/TestCases';
-import { Services } from './pages/services/Services';
-import { Reports } from './pages/reports/Reports';
-import { Generate } from './pages/generate/Generate';
-import { Features } from './pages/features/Features';
+import { MainLayout } from './components/layout/MainLayout/MainLayout'
+import { Features } from './pages/features/Features'
+import { Generate } from './pages/generate/Generate'
+import { Home } from './pages/home/Home'
+import { Releases } from './pages/releases/Releases'
+import { Reports } from './pages/reports/Reports'
+import { Services } from './pages/services/Services'
+import { TestCases } from './pages/tests-cases/TestCases'
 
 /**
  * Configuración del enrutador principal de la aplicación.
@@ -58,4 +57,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+])

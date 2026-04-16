@@ -6,10 +6,5 @@
  */
 
 export function TestCases() {
-    return (
-        <div>
-            Test Cases
-        </div>
-    )
+  return <div>Test Cases</div>
 }
-

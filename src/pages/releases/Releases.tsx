@@ -6,7 +6,7 @@
  */
 
 import { useNavigate } from 'react-router'
-import classes from './Releases.module.css';
+import classes from './Releases.module.css'
 
 export function Releases() {
   const navigate = useNavigate()

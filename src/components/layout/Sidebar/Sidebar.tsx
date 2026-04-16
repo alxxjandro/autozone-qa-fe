@@ -4,20 +4,20 @@
  * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
-import { useState } from 'react';
-import { NavLink, Text, Avatar, Group, Stack, Box, ActionIcon, Divider } from '@mantine/core';
-import { useLocation, Link } from 'react-router';
+import { ActionIcon, Avatar, Box, Divider, Group, NavLink, Stack, Text } from '@mantine/core'
 import {
-  IconPlugConnected,
   IconBox,
-  IconSubtitlesAi,
-  IconFileDescription,
-  IconTestPipe,
   IconBug,
   IconChevronsLeft,
-  IconHome
-} from '@tabler/icons-react';
-import classes from './Sidebar.module.css';
+  IconFileDescription,
+  IconHome,
+  IconPlugConnected,
+  IconSubtitlesAi,
+  IconTestPipe,
+} from '@tabler/icons-react'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router'
+import classes from './Sidebar.module.css'
 
 /**
  * Configuración de los elementos de navegación.
@@ -31,7 +31,7 @@ const navData = [
   { link: '/test-cases', label: 'Test Cases', icon: IconTestPipe },
   { link: '/generate', label: 'Generate', icon: IconSubtitlesAi },
   { link: '/reports', label: 'Reports', icon: IconFileDescription },
-];
+]
 
 /**
  * Componente Sidebar.
@@ -40,16 +40,16 @@ const navData = [
  * * @returns {JSX.Element} Una barra lateral vertical estructurada.
  */
 export function Sidebar() {
-  const location = useLocation();
+  const location = useLocation()
 
   // Estado para rastrear qué enlace está seleccionado, inicializado con la ruta actual de la URL
-  const [active, setActive] = useState(location.pathname);
+  const [active, setActive] = useState(location.pathname)
 
   /**
    * Mapeo de navData para transformar objetos de configuración en componentes NavLink de Mantine.
    * Se integra con 'react-router' mediante la prop 'component={Link}'.
    */
-  const links = navData.map((item) => (
+  const links = navData.map(item => (
     <NavLink
       key={item.label}
       component={Link} // Permite la navegación del lado del cliente sin recargar la página
@@ -62,7 +62,7 @@ export function Sidebar() {
       variant="filled"
       color="#FFF4ED" // Fondo suave para el estado activo
     />
-  ));
+  ))
 
   return (
     <Stack h="100%" justify="space-between" p="md">
@@ -71,7 +71,9 @@ export function Sidebar() {
         <Group justify="space-between" mb="xl">
           <Group>
             <Avatar color="orange" radius="md">
-              <Text fw={700} size="xl">T</Text>
+              <Text fw={700} size="xl">
+                T
+              </Text>
             </Avatar>
             <Text size="xl" fw={700} c="dark.7">
               TestFlow
@@ -94,7 +96,9 @@ export function Sidebar() {
             RS
           </Avatar>
           <Box>
-            <Text fw={600} size="sm">Santiago Estrada</Text>
+            <Text fw={600} size="sm">
+              Santiago Estrada
+            </Text>
             <Text size="xs" c="dimmed">
               Developer
             </Text>
@@ -102,5 +106,5 @@ export function Sidebar() {
         </Group>
       </Box>
     </Stack>
-  );
+  )
 }
