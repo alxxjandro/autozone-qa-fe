@@ -5,10 +5,11 @@
  * Autozone QA Automation
  */
 
-import { TitleHeader } from "@/components/layout/TitleHeader/TitleHeader";
-import { Button } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
-import { FeaturesList, FeatureItem } from './FeaturesList';
+import { Button } from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
+import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
+import type { FeatureItem } from './FeaturesList'
+import { FeaturesList } from './FeaturesList'
 
 export function Features() {
   const myFeatures: FeatureItem[] = [
@@ -19,7 +20,7 @@ export function Features() {
       testCount: 12,
       tags: ['regression', 'smoke'],
       status: 'Active',
-      priority: 'High'
+      priority: 'High',
     },
     {
       id: 'F2.',
@@ -28,7 +29,7 @@ export function Features() {
       testCount: 8,
       tags: ['regression'],
       status: 'Active',
-      priority: 'Medium'
+      priority: 'Medium',
     },
     {
       id: 'F3.',
@@ -37,7 +38,7 @@ export function Features() {
       testCount: 15,
       tags: ['regression', 'e2e'],
       status: 'Active',
-      priority: 'High'
+      priority: 'High',
     },
     {
       id: 'F4.',
@@ -46,7 +47,7 @@ export function Features() {
       testCount: 6,
       tags: ['smoke'],
       status: 'Draft',
-      priority: 'Low'
+      priority: 'Low',
     },
     {
       id: 'F5.',
@@ -55,20 +56,15 @@ export function Features() {
       testCount: 9,
       tags: ['regression'],
       status: 'Active',
-      priority: 'Medium'
+      priority: 'Medium',
     },
-  ];
-
+  ]
 
   return (
     <div>
       <TitleHeader
         title="Order Management"
-        metaDetails={[
-          '5 features',
-          '42 test cases',
-          '94% coverage'
-        ]}
+        metaDetails={['5 features', '42 test cases', '94% coverage']}
         breadcrumbs={[
           { title: 'Releases', href: '/releases' },
           { title: 'Q2 2026 Regression', href: '#' },
@@ -82,18 +78,14 @@ export function Features() {
             radius="md"
             size="md"
             fw={600}
-            onClick={() => console.log('Open modal')}
+            onClick={() => {}}
           >
             Add Feature
           </Button>
         }
       />
 
-      <FeaturesList
-        data={myFeatures}
-        onViewClick={(id) => console.log(`Viewing feature: ${id}`)}
-        onEditClick={(id) => console.log(`Editing feature: ${id}`)}
-      />
+      <FeaturesList data={myFeatures} onViewClick={() => {}} onEditClick={() => {}} />
     </div>
   )
 }

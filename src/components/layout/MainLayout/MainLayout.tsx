@@ -28,7 +28,7 @@ export function MainLayout() {
         <Sidebar />
       </AppShell.Navbar>
 
-      <AppShell.Main bg="#FCF9F4" >
+      <AppShell.Main bg="#FCF9F4">
         <div style={{ padding: '15px' }}>
           <Outlet />
         </div>
