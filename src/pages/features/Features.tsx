@@ -5,12 +5,10 @@
  * Autozone QA Automation
  */
 
-import { Button } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
+import { FeatureModalCreate } from './FeatureModalCreate'
 import type { FeatureItem } from './FeaturesList'
 import { FeaturesList } from './FeaturesList'
-import { FeatureModalCreate } from './FeatureModalCreate'
 
 export function Features() {
   const myFeatures: FeatureItem[] = [
@@ -72,12 +70,9 @@ export function Features() {
           { title: 'Order Management', href: '#' },
           { title: 'Features', href: '#' },
         ]}
-
-        actionComponent={
-          <FeatureModalCreate />
-        }
+        actionComponent={<FeatureModalCreate />}
       />
-      <FeaturesList data={myFeatures} onViewClick={() => { }} onEditClick={() => { }} />
+      <FeaturesList data={myFeatures} onViewClick={() => {}} onEditClick={() => {}} />
     </div>
   )
 }
