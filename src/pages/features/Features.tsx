@@ -10,6 +10,7 @@ import { IconPlus } from '@tabler/icons-react'
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
 import type { FeatureItem } from './FeaturesList'
 import { FeaturesList } from './FeaturesList'
+import { FeatureModalCreate } from './FeatureModalCreate'
 
 export function Features() {
   const myFeatures: FeatureItem[] = [
@@ -71,21 +72,12 @@ export function Features() {
           { title: 'Order Management', href: '#' },
           { title: 'Features', href: '#' },
         ]}
+
         actionComponent={
-          <Button
-            leftSection={<IconPlus size={16} stroke={2.5} />}
-            color="orange.6"
-            radius="md"
-            size="md"
-            fw={600}
-            onClick={() => {}}
-          >
-            Add Feature
-          </Button>
+          <FeatureModalCreate />
         }
       />
-
-      <FeaturesList data={myFeatures} onViewClick={() => {}} onEditClick={() => {}} />
+      <FeaturesList data={myFeatures} onViewClick={() => { }} onEditClick={() => { }} />
     </div>
   )
 }
