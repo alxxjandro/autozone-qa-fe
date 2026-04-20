@@ -7,14 +7,16 @@
 
 import { Button, Group, Select, Stack, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { notifications } from '@mantine/notifications'
 import { zodResolver } from 'mantine-form-zod-resolver'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { ModalTemplate } from '@/components/ui/ModalTemplate/ModalTemplate'
 
 const schema = z.object({
-  featureName: z.string().min(1, { message: 'El nombre es obligatorio' }),
-  description: z.string().optional().default(''),
-  service: z.string().min(1, { message: 'Selecciona un servicio' }),
+  name: z.string().min(1, 'El nombre es obligatorio'),
+  description: z.string().optional(),
+  idServices: z.string().min(1, 'Selecciona un servicio'),
 })
 
 const labelStyles = {
@@ -28,17 +30,72 @@ const labelStyles = {
 type FormValues = z.infer<typeof schema>
 
 export function FeatureModalCreate() {
+  const [services, setServices] = useState<{ value: string; label: string }[]>([])
+
+  const fetchServices = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/services')
+      const data = await response.json()
+
+      if (Array.isArray(data)) {
+        const formatted = data.map((item: any) => ({
+          value: item.id.toString(),
+          label: item.serviceName || item.name,
+        }))
+        setServices(formatted)
+      }
+    } catch (error) {
+      console.error('Error cargando servicios:', error)
+      setServices([])
+    }
+  }
+
+  useEffect(() => {
+    fetchServices()
+  }, [])
+
   const form = useForm<FormValues>({
     initialValues: {
-      featureName: '',
+      name: '',
       description: '',
-      service: '',
+      idServices: '',
     },
     validate: zodResolver(schema),
   })
 
-  const handleSubmit = (values: FormValues) => {
-    console.error(values)
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      const payload = {
+        featureName: values.name,
+        featureDescription: values.description,
+        idService: parseInt(values.idServices),
+      }
+
+      const response = await fetch('http://localhost:8080/api/v1/features', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.ok) {
+        notifications.show({
+          title: '¡Éxito!',
+          message: 'Feature creado correctamente',
+          color: 'teal',
+        })
+        form.reset()
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        console.error('Error del backend:', errorData)
+        notifications.show({
+          title: 'Error 400',
+          message: 'Revisa que los datos coincidan con el DTO de Java',
+          color: 'red',
+        })
+      }
+    } catch (error) {
+      console.error('Error de conexión:', error)
+    }
   }
 
   return (
@@ -50,17 +107,18 @@ export function FeatureModalCreate() {
               label="FEATURE NAME"
               placeholder="e.g. Refund Processing"
               withAsterisk
-              {...form.getInputProps('featureName')}
+              {...form.getInputProps('name')}
               styles={{ label: labelStyles.label }}
             />
 
             <Select
               label="SERVICE NAME"
               placeholder="Select a service..."
-              data={['Inventory Service', 'Auth Service', 'Payment Gateway']}
+              data={services}
               withAsterisk
-              {...form.getInputProps('service')}
+              {...form.getInputProps('idServices')}
               styles={{ label: labelStyles.label }}
+              nothingFoundMessage="No services found"
             />
 
             <Textarea
