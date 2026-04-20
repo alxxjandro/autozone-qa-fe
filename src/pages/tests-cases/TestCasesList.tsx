@@ -5,7 +5,7 @@
  * Autozone QA Automation
  */
 
-import { Badge, Button, Flex, Group, Indicator, Stack, Table, Text } from '@mantine/core'
+import { Badge, Button, Group, Indicator, Table, Text } from '@mantine/core'
 
 export type PriorityLevel = 'Low' | 'Medium' | 'High' | 'Critical'
 export type StatusLevel = 'Pass' | 'Fail' | 'Pending'
@@ -17,6 +17,12 @@ export interface TestCaseItem {
   type: Type
   priority: PriorityLevel
   status: StatusLevel
+  feature: string
+  description: string
+  preconditions: string
+  postconditions: string
+  inputs: string
+  steps: string
   testCount: number
 }
 
