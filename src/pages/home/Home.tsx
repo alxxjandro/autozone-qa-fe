@@ -18,7 +18,7 @@ export function Home() {
           display: 'inline-block',
         }}
       >
-        Hello — testing purposes only
+        Hello — testing purposes only hola
       </div>
       {/* <UsersTable /> */}
     </>
