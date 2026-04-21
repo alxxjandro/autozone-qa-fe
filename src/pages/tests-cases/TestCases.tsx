@@ -8,126 +8,27 @@
 import { Badge, Box, Button, Modal, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
 import type { TestCaseItem } from './TestCasesList'
 import { TestCasesList } from './TestCasesList'
 
 export function TestCases() {
-  const myTestCases: TestCaseItem[] = [
-    {
-      id: 'TC-0042',
-      name: 'Validate Payment on Checkout',
-      type: 'Regression',
-      priority: 'High',
-      status: 'Pass',
-      feature: 'Checkout Flow',
-      description: 'Verify that a user can complete payment using a valid credit card.',
-      preconditions: 'User has items in cart',
-      postconditions: 'Order is created successfully',
-      inputs: 'Valid card number, expiration date, CVV',
-      steps: 'Go to checkout, enter valid payment details, confirm payment, submit order',
-      testCount: 1,
-    },
-    {
-      id: 'TC-0043',
-      name: 'Checkout with Guest User',
-      type: 'Regression',
-      priority: 'High',
-      status: 'Pass',
-      feature: 'Feature2',
-      description: 'Description2',
-      preconditions: 'Preconditions2',
-      postconditions: 'Postconditions2',
-      inputs: 'Inputs2',
-      steps: 'Steps2',
-      testCount: 2,
-    },
-    {
-      id: 'TC-0044',
-      name: 'Apply Discount Code',
-      type: 'On Demand',
-      priority: 'Medium',
-      status: 'Fail',
-      feature: 'Feature3',
-      description: 'Description3',
-      preconditions: 'Preconditions3',
-      postconditions: 'Postconditions3',
-      inputs: 'Inputs3',
-      steps: 'Steps3',
-      testCount: 3,
-    },
-    {
-      id: 'TC-0045',
-      name: 'Empty Cart Redirect',
-      type: 'Regression',
-      priority: 'Low',
-      status: 'Pass',
-      feature: 'Feature4',
-      description: 'Description4',
-      preconditions: 'Preconditions4',
-      postconditions: 'Postconditions4',
-      inputs: 'Inputs4',
-      steps: 'Steps4',
-      testCount: 4,
-    },
-    {
-      id: 'TC-0046',
-      name: 'Address Validation on Checkout',
-      type: 'Regression',
-      priority: 'High',
-      status: 'Pass',
-      feature: 'Feature5',
-      description: 'Description5',
-      preconditions: 'Preconditions5',
-      postconditions: 'Postconditions5',
-      inputs: 'Inputs5',
-      steps: 'Steps5',
-      testCount: 5,
-    },
-    {
-      id: 'TC-0047',
-      name: 'Payment Failure Handling',
-      type: 'Regression',
-      priority: 'Critical',
-      status: 'Fail',
-      feature: 'Feature6',
-      description: 'Description6',
-      preconditions: 'Preconditions6',
-      postconditions: 'Postconditions6',
-      inputs: 'Inputs6',
-      steps: 'Steps6',
-      testCount: 6,
-    },
-    {
-      id: 'TC-0048',
-      name: 'Order Summary Accuracy',
-      type: 'On Demand',
-      priority: 'Medium',
-      status: 'Pass',
-      feature: 'Feature7',
-      description: 'Description7',
-      preconditions: 'Preconditions7',
-      postconditions: 'Postconditions7',
-      inputs: 'Inputs7',
-      steps: 'Steps7',
-      testCount: 7,
-    },
-    {
-      id: 'TC-0049',
-      name: 'Tax Calculation Verification',
-      type: 'Regression',
-      priority: 'Medium',
-      status: 'Pending',
-      feature: 'Feature8',
-      description: 'Description8',
-      preconditions: 'Preconditions8',
-      postconditions: 'Postconditions8',
-      inputs: 'Inputs8',
-      steps: 'Steps8',
-      testCount: 8,
-    },
-  ]
+  const [myTestCases, setMyTestCases] = useState<TestCaseItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/v1/test-cases')
+      .then(res => res.json())
+      .then((data: TestCaseItem[]) => {
+        setMyTestCases(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Error fetching test cases:', err)
+        setLoading(false)
+      })
+  }, [])
 
   const [opened, { open, close }] = useDisclosure(false)
 
@@ -150,7 +51,7 @@ export function TestCases() {
         <Modal.Content>
           <Modal.Header>
             <Modal.Title fw={700} mb="lg" c="#1A1A1F">
-              {selectedTestCase?.name}
+              {selectedTestCase?.title}
             </Modal.Title>
             <Modal.CloseButton />
           </Modal.Header>
@@ -166,7 +67,7 @@ export function TestCases() {
                 FEATURE RELACIONADO
               </Text>
               <Text size="sm" c="#1A1A1F" mb="xs">
-                {selectedTestCase?.feature}
+                {selectedTestCase?.relatedFeature}
               </Text>
               <Text size="md" c="#8C8C94">
                 DESCRIPCIÓN
@@ -222,7 +123,7 @@ export function TestCases() {
 
       <TitleHeader
         title="Checkout Flow — Test Cases"
-        metaDetails={['12 test cases', 'Regression + On Demand']}
+        metaDetails={[`${myTestCases.length} test cases`]}
         breadcrumbs={[
           { title: 'Releases', href: '/releases' },
           { title: 'Q2 2026 Regression', href: '#' },
@@ -238,14 +139,24 @@ export function TestCases() {
             radius="md"
             size="md"
             fw={600}
-            onClick={open}
+            onClick={() => {}}
           >
             New Test Case
           </Button>
         }
       />
 
-      <TestCasesList data={myTestCases} onViewClick={handleViewClick} onEditClick={() => { }} />
+      {loading ? (
+        <Text ta="center" mt="xl">
+          Loading...
+        </Text>
+      ) : myTestCases.length === 0 ? (
+        <Text ta="center" c="#8C8C94" mt="xl" size="xl">
+          No test cases available
+        </Text>
+      ) : (
+        <TestCasesList data={myTestCases} onViewClick={handleViewClick} onEditClick={() => {}} />
+      )}
     </div>
   )
 }
