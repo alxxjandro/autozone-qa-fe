@@ -64,7 +64,7 @@ export function TestCasesModalCreate() {
       outputs: '',
       type: 'Regression',
     },
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+
     validate: zodResolver(schema),
   })
 
