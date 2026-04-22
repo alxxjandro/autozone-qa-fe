@@ -4,78 +4,40 @@
  * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
-import { Badge, Box, Card, Group, Text } from '@mantine/core'
+import { Box, Card, Stack, Text } from '@mantine/core'
 import { IconCode, IconDatabase, IconDeviceDesktop, IconServer } from '@tabler/icons-react'
+import { useGetServices } from '@/hooks/servicesGetServices'
+import type { Service } from '@/types/Service.types'
 
 interface ServiceCardProps {
   idService: number
   nombre: string
   descripcion?: string
-  featuresCount?: number
-  testCasesCount?: number
-  status?: 'active' | 'inactive' | 'draft' | 'archived'
 }
 
 const getServiceIcon = (nombre: string) => {
   switch (nombre.toLowerCase()) {
     case 'backend':
-      return <IconCode size={16} />
+      return <IconCode size={18} />
     case 'frontend':
-      return <IconDeviceDesktop size={16} />
+      return <IconDeviceDesktop size={18} />
     case 'bd':
-      return <IconDatabase size={16} />
+      return <IconDatabase size={18} />
     default:
-      return <IconServer size={16} />
+      return <IconServer size={18} />
   }
 }
 
-export function ServiceCard({
-  idService,
-  nombre,
-  descripcion,
-  featuresCount = 0,
-  testCasesCount = 0,
-  status = 'active',
-}: ServiceCardProps) {
+export function ServiceCard({ idService, nombre, descripcion }: ServiceCardProps) {
   const handleCardClick = () => {
     window.location.href = `/services/${idService}`
-  }
-
-  const getStatusColor = () => {
-    switch (status) {
-      case 'active':
-        return 'green'
-      case 'inactive':
-        return 'gray'
-      case 'draft':
-        return 'yellow'
-      case 'archived':
-        return 'red'
-      default:
-        return 'gray'
-    }
-  }
-
-  const getStatusText = () => {
-    switch (status) {
-      case 'active':
-        return 'ACTIVE'
-      case 'inactive':
-        return 'INACTIVE'
-      case 'draft':
-        return 'DRAFT'
-      case 'archived':
-        return 'ARCHIVED'
-      default:
-        return String(status).toUpperCase()
-    }
   }
 
   return (
     <Card
       shadow="sm"
       radius="md"
-      p="md"
+      p="lg"
       withBorder
       onClick={handleCardClick}
       style={{
@@ -83,6 +45,7 @@ export function ServiceCard({
         cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
         height: '100%',
+        minHeight: '160px',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-2px)'
@@ -93,129 +56,61 @@ export function ServiceCard({
         e.currentTarget.style.boxShadow = ''
       }}
     >
-      <Group justify="space-between" align="flex-start">
-        <Group>
-          <Box
-            style={{
-              backgroundColor: '#f1f3f5',
-              borderRadius: '50%',
-              padding: 8,
-            }}
-          >
-            {getServiceIcon(nombre)}
-          </Box>
+      <Stack align="center" justify="center" h="100%" gap="xs">
+        <Box
+          style={{
+            backgroundColor: '#f1f3f5',
+            borderRadius: '50%',
+            padding: 10,
+          }}
+        >
+          {getServiceIcon(nombre)}
+        </Box>
 
-          <Box>
-            <Text fw={600}>{nombre}</Text>
-            <Text size="xs" c="dimmed">
-              #{idService}
-            </Text>
-          </Box>
-        </Group>
-
-        <Badge color={getStatusColor()} variant="light">
-          {getStatusText()}
-        </Badge>
-      </Group>
-
-      {descripcion && (
-        <Text size="sm" mt="xs" c="dimmed" lineClamp={2}>
-          {descripcion}
-        </Text>
-      )}
-
-      <Group mt="sm" gap="xs">
-        <Badge variant="light" color="blue">
-          {featuresCount} features
-        </Badge>
-        <Badge variant="light" color="teal">
-          {testCasesCount} test cases
-        </Badge>
-      </Group>
-
-      <Group justify="space-between" mt="md">
-        <Text size="xs" c="dimmed">
-          Servicio del sistema
+        <Text fw={600} ta="center">
+          {nombre}
         </Text>
 
-        <Text size="xs" c="orange" fw={500}>
-          See details →
-        </Text>
-      </Group>
+        {descripcion && (
+          <Text size="xs" c="dimmed" ta="center" lineClamp={2}>
+            {descripcion}
+          </Text>
+        )}
+      </Stack>
     </Card>
   )
 }
 
 interface ServicesListProps {
   searchQuery?: string
-  filter?: string
 }
 
-export function ServicesList({ searchQuery = '', filter = 'all' }: ServicesListProps) {
-  const services: ServiceCardProps[] = [
-    {
-      idService: 1,
-      nombre: 'Backend',
-      descripcion: 'Lógica del sistema y APIs para la gestión automatizada',
-      featuresCount: 8,
-      testCasesCount: 42,
-      status: 'active',
-    },
-    {
-      idService: 2,
-      nombre: 'Frontend',
-      descripcion: 'Interfaz de usuario y experiencia visual',
-      featuresCount: 12,
-      testCasesCount: 38,
-      status: 'active',
-    },
-    {
-      idService: 3,
-      nombre: 'BD',
-      descripcion: 'Base de datos y persistencia de información',
-      featuresCount: 5,
-      testCasesCount: 24,
-      status: 'inactive',
-    },
-    {
-      idService: 4,
-      nombre: 'API Gateway',
-      descripcion: 'Gestión de rutas y autenticación',
-      featuresCount: 6,
-      testCasesCount: 15,
-      status: 'draft',
-    },
-    {
-      idService: 5,
-      nombre: 'Auth Service',
-      descripcion: 'Servicio de autenticación y autorización',
-      featuresCount: 4,
-      testCasesCount: 12,
-      status: 'archived',
-    },
-  ]
+export function ServicesList({ searchQuery = '' }: ServicesListProps) {
+  const { services, loading, error } = useGetServices()
 
-  const filteredServices = services.filter(service => {
-    if (filter !== 'all' && service.status !== filter) return false
+  if (loading) return <Text>Cargando servicios...</Text>
+  if (error) return <Text c="red">Error: {error}</Text>
 
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      const matchesName = service.nombre.toLowerCase().includes(query)
-      const matchesDescription = service.descripcion?.toLowerCase().includes(query) || false
-      return matchesName || matchesDescription
-    }
+  const mappedServices: ServiceCardProps[] = services.map((s: Service) => ({
+    idService: s.id,
+    nombre: s.name,
+    descripcion: s.description,
+  }))
 
-    return true
+  const filteredServices = mappedServices.filter(service => {
+    const query = searchQuery.toLowerCase()
+
+    return (
+      service.nombre.toLowerCase().includes(query) ||
+      (service.descripcion?.toLowerCase().includes(query) ?? false)
+    )
   })
 
   if (filteredServices.length === 0) {
     return (
-      <Card withBorder p="xl" radius="md">
-        <Text ta="center" c="dimmed" size="lg">
-          No services found
-        </Text>
-        <Text ta="center" c="dimmed" size="sm" mt="xs">
-          Try adjusting your search or filter criteria
+      <Card withBorder p="xl" radius="md" style={{ gridColumn: '1 / -1' }}>
+        <Text ta="center" c="dimmed">
+          No services found matching your criteria.
         </Text>
       </Card>
     )

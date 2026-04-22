@@ -25,6 +25,7 @@ export function BaseCard({ children, onClick }: BaseCardProps) {
         cursor: onClick ? 'pointer' : 'default',
         transition: 'transform 0.2s, box-shadow 0.2s',
         height: '100%',
+        minHeight: '160px',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-2px)'
@@ -35,7 +36,7 @@ export function BaseCard({ children, onClick }: BaseCardProps) {
         e.currentTarget.style.boxShadow = ''
       }}
     >
-      <Stack align="center" justify="center" h="100%" gap="sm">
+      <Stack align="center" justify="center" h="100%" gap="xs">
         <ActionIcon variant="light" size="xl" radius="xl" color="orange">
           <IconSquareRoundedPlus style={{ width: '70%', height: '70%' }} />
         </ActionIcon>

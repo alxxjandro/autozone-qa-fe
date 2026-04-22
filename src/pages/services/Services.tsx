@@ -5,30 +5,26 @@
  * Autozone QA Automation
  */
 
-import {
-  Autocomplete,
-  Button,
-  Container,
-  Group,
-  SegmentedControl,
-  SimpleGrid,
-  Stack,
-} from '@mantine/core'
+import { Autocomplete, Button, Container, Group, SimpleGrid, Stack } from '@mantine/core'
 import { IconPlus, IconSearch } from '@tabler/icons-react'
 import { useState } from 'react'
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
+import { useGetServices } from '@/hooks/servicesGetServices'
+import type { Service } from '@/types/Service.types'
 import { BaseCard } from './ServicesAdd'
 import { ServicesList } from './ServicesCards'
 
 export function Services() {
-  const [activeFilter, setActiveFilter] = useState('all')
-  const [searchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const { services, loading } = useGetServices()
+
+  const handleAddService = () => {}
 
   return (
     <div>
       <TitleHeader
         title="Services"
-        metaDetails={['0 services', '0 test cases']}
+        metaDetails={[loading ? 'Loading...' : `${services.length} services`, '0 test cases']}
         breadcrumbs={[{ title: 'Services', href: '/services' }]}
         actionComponent={
           <Button
@@ -37,7 +33,7 @@ export function Services() {
             radius="md"
             size="md"
             fw={600}
-            onClick={() => console.log('Open modal')}
+            onClick={handleAddService}
           >
             Add Service
           </Button>
@@ -47,34 +43,23 @@ export function Services() {
       <Container fluid px="md" mt="md">
         <Stack gap="md">
           <Group grow align="center">
-            <SegmentedControl
-              value={activeFilter}
-              onChange={setActiveFilter}
-              data={[
-                { label: 'All', value: 'all' },
-                { label: 'Active', value: 'active' },
-                { label: 'Draft', value: 'draft' },
-                { label: 'Archived', value: 'archived' },
-              ]}
-              color="orange"
-              style={{ flex: 2 }}
-            />
-
             <Autocomplete
               placeholder="Search Services..."
-              data={['Backend', 'Frontend', 'API']}
+              data={services?.map((s: Service) => s.name) || []}
               limit={5}
               ml="auto"
               size="xs"
               w="220px"
+              value={searchQuery}
+              onChange={setSearchQuery}
               leftSection={<IconSearch size={16} stroke={2.5} />}
             />
           </Group>
 
           <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-            <BaseCard onClick={() => console.log('Add new service')}>Add Service</BaseCard>
+            <BaseCard onClick={handleAddService}>Add Service</BaseCard>
 
-            <ServicesList searchQuery={searchQuery} filter={activeFilter} />
+            <ServicesList searchQuery={searchQuery} />
           </SimpleGrid>
         </Stack>
       </Container>

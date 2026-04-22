@@ -13,8 +13,8 @@ import { Generate } from './pages/generate/Generate'
 import { Home } from './pages/home/Home'
 import { Releases } from './pages/releases/Releases'
 import { Reports } from './pages/reports/Reports'
-import { ServiceId } from './pages/services/ServiceId/ServiceId'
 import { Services } from './pages/services/Services'
+import { ServicesId } from './pages/services/ServicesId/ServicesId'
 import { TestCases } from './pages/tests-cases/TestCases'
 
 /**
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'services/:serviceId',
-        element: <ServiceId />,
+        element: <ServicesId />,
       },
       {
         path: 'test-cases',
