@@ -8,14 +8,14 @@
 import { Button, Group, Select, Stack, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { zodResolver } from 'mantine-form-zod-resolver'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { z } from 'zod'
 import { ModalTemplate } from '@/components/ui/ModalTemplate/ModalTemplate'
+import { useCreateFeature } from '@/hooks/useCreateFeature'
 
-const schema = z.object({
+export const schema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
-  description: z.string().optional(),
+  description: z.string().nullable().or(z.literal('')),
   idServices: z.string().min(1, 'Selecciona un servicio'),
 })
 
@@ -27,32 +27,41 @@ const labelStyles = {
   },
 }
 
+interface ServiceResponse {
+  id: number | string
+  serviceName?: string
+  name?: string
+}
+
 type FormValues = z.infer<typeof schema>
 
 export function FeatureModalCreate() {
+  const { createFeature, loading } = useCreateFeature()
   const [services, setServices] = useState<{ value: string; label: string }[]>([])
 
-  const fetchServices = async () => {
+  const API_URL = import.meta.env.VITE_API_URL_LOCAL
+  const endpointService = `${API_URL}/v1/services`
+
+  const fetchServices = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/services')
-      const data = await response.json()
+      const response = await fetch(endpointService)
+      const data = (await response.json()) as ServiceResponse[]
 
       if (Array.isArray(data)) {
-        const formatted = data.map((item: any) => ({
+        const formatted = data.map(item => ({
           value: item.id.toString(),
-          label: item.serviceName || item.name,
+          label: item.serviceName || item.name || 'Unknown Service',
         }))
         setServices(formatted)
       }
     } catch (error) {
       console.error('Error cargando servicios:', error)
-      setServices([])
     }
-  }
+  }, [endpointService])
 
   useEffect(() => {
-    fetchServices()
-  }, [])
+    void fetchServices()
+  }, [fetchServices])
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -60,41 +69,28 @@ export function FeatureModalCreate() {
       description: '',
       idServices: '',
     },
-    validate: zodResolver(schema),
+    validate: {
+      name: value => (value.trim().length < 1 ? 'El nombre es obligatorio' : null),
+      idServices: value => (!value ? 'Selecciona un servicio' : null),
+    },
   })
 
   const handleSubmit = async (values: FormValues) => {
-    try {
-      const payload = {
-        featureName: values.name,
-        featureDescription: values.description,
-        idService: parseInt(values.idServices),
-      }
+    const payload = {
+      featureName: values.name,
+      featureDescription: values.description || '',
+      idService: parseInt(values.idServices),
+    }
 
-      const response = await fetch('http://localhost:8080/api/v1/features', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+    const result = await createFeature(payload)
+
+    if (result) {
+      notifications.show({
+        title: '¡Éxito!',
+        message: 'Feature creado correctamente',
+        color: 'teal',
       })
-
-      if (response.ok) {
-        notifications.show({
-          title: '¡Éxito!',
-          message: 'Feature creado correctamente',
-          color: 'teal',
-        })
-        form.reset()
-      } else {
-        const errorData = await response.json().catch(() => ({}))
-        console.error('Error del backend:', errorData)
-        notifications.show({
-          title: 'Error 400',
-          message: 'Revisa que los datos coincidan con el DTO de Java',
-          color: 'red',
-        })
-      }
-    } catch (error) {
-      console.error('Error de conexión:', error)
+      form.reset()
     }
   }
 
@@ -119,6 +115,7 @@ export function FeatureModalCreate() {
               {...form.getInputProps('idServices')}
               styles={{ label: labelStyles.label }}
               nothingFoundMessage="No services found"
+              searchable
             />
 
             <Textarea
@@ -130,10 +127,16 @@ export function FeatureModalCreate() {
             />
 
             <Group justify="flex-end" mt="xl">
-              <Button variant="outline" color="gray" radius="md" onClick={() => form.reset()}>
+              <Button
+                variant="outline"
+                color="gray"
+                radius="md"
+                onClick={() => form.reset()}
+                disabled={loading}
+              >
                 Cancel
               </Button>
-              <Button type="submit" bg="#f46624" radius="md">
+              <Button type="submit" bg="#f46624" radius="md" loading={loading}>
                 Create Feature
               </Button>
             </Group>
