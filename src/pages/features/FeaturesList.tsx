@@ -1,3 +1,10 @@
+/*
+ * Tecnológico de Monterrey — Campus Chihuahua
+ * Desarrollo e Implantación de Sistemas de Software
+ * TC3005B GPO500 - 2026
+ * Autozone QA Automation
+ */
+
 import { Button, Flex, Group, Paper, Stack, Text } from '@mantine/core'
 import { useNavigate } from 'react-router'
 import type { Feature } from '@/types/feature.types'

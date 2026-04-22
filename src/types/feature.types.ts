@@ -1,3 +1,10 @@
+/*
+ * Tecnológico de Monterrey — Campus Chihuahua
+ * Desarrollo e Implantación de Sistemas de Software
+ * TC3005B GPO500 - 2026
+ * Autozone QA Automation
+ */
+
 import { z } from 'zod'
 
 export const featureSchema = z.object({
