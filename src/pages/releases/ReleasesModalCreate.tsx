@@ -145,12 +145,7 @@ export function ReleasesModalCreate() {
           />
 
           <Group justify="flex-end" mt="xl">
-            <Button
-              variant="outline"
-              bg="#FFFFFF"
-              color="#8C8C94"
-              onClick={() => form.reset()}
-            >
+            <Button variant="outline" bg="#FFFFFF" color="#8C8C94" onClick={() => form.reset()}>
               Cancel
             </Button>
             <Button type="submit" bg="#F26621" color="#FFFFFF">
