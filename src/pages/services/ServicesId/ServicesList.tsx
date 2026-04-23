@@ -4,7 +4,8 @@
  * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
-import { Accordion, Button, Card, Group, Stack, Text, UnstyledButton } from '@mantine/core'
+
+import { Accordion, Button, Card, Group, Stack, Text } from '@mantine/core'
 
 export interface FeatureItem {
   idFeature: number
@@ -58,49 +59,31 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
             </Accordion.Control>
 
             <Accordion.Panel>
-              <Stack gap={0}>
+              <Stack gap={0} pt="xs">
                 {data.map((feature, index) => (
                   <Group
                     key={feature.idFeature}
-                    wrap="nowrap"
+                    px="md"
+                    py="sm"
                     justify="space-between"
-                    gap={0}
                     style={{
                       borderBottom: index !== data.length - 1 ? '1px solid #eee' : 'none',
                     }}
                   >
-                    <UnstyledButton
-                      component="a"
-                      href={`/features/${feature.idFeature}`}
-                      p="sm"
-                      style={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        transition: 'background 0.2s ease',
-                      }}
-                      onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f8f9fa')}
-                      onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
-                    >
-                      <Group gap="sm">
-                        <Text size="xs" c="orange.6" fw={700}>
-                          F{feature.idFeature}
-                        </Text>
-                        <Text size="sm" fw={400} c="dark">
-                          {feature.nombre}
-                        </Text>
-                      </Group>
-                    </UnstyledButton>
+                    <Group gap="sm">
+                      <Text size="xs" c="orange.6" fw={700}>
+                        F{feature.idFeature}
+                      </Text>
+                      <Text size="sm" fw={400}>
+                        {feature.nombre}
+                      </Text>
+                    </Group>
 
                     <Button
                       size="xs"
                       color="red"
                       variant="subtle"
-                      mr="md"
-                      onClick={e => {
-                        e.preventDefault()
-                        onDeleteClick?.(feature.idFeature)
-                      }}
+                      onClick={() => onDeleteClick?.(feature.idFeature)}
                     >
                       Eliminar
                     </Button>
