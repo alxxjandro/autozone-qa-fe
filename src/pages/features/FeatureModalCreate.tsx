@@ -11,7 +11,7 @@ import { notifications } from '@mantine/notifications'
 import { z } from 'zod'
 import { ModalTemplate } from '@/components/ui/ModalTemplate/ModalTemplate'
 import { useCreateFeature } from '@/hooks/useCreateFeature'
-import { useGetServices } from '@/hooks/servicesGetServices'
+import { useGetServices } from '@/hooks/useGetServices'
 
 export const schema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
@@ -83,7 +83,7 @@ export function FeatureModalCreate() {
               data={services.map((s: any) => ({
                 value: s.id.toString(),
                 label: s.serviceName || s.name || 'Unknown',
-              }))}
+              }))}  
               loading={loadingServices}
               disabled={loadingServices}
               withAsterisk
