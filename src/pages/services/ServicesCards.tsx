@@ -7,12 +7,19 @@
 import { Box, Card, Stack, Text } from '@mantine/core'
 import { IconCode, IconDatabase, IconDeviceDesktop, IconServer } from '@tabler/icons-react'
 import { useGetServices } from '@/hooks/useGetServices'
+<<<<<<< HEAD
 import type { ServiceVO } from '@/models/ServiceVO'
+=======
+import type { Service } from '@/types/service.types'
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
 
 interface ServiceCardProps {
   id: number
   nombre: string
+<<<<<<< HEAD
   descripcion?: string | null
+=======
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
 }
 
 const getServiceIcon = (nombre: string) => {
@@ -28,7 +35,11 @@ const getServiceIcon = (nombre: string) => {
   }
 }
 
+<<<<<<< HEAD
 export function ServiceCard({ id, nombre }: ServiceCardProps) {
+=======
+export function ServiceCard({ idService, nombre }: ServiceCardProps) {
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
   const handleCardClick = () => {
     window.location.href = `/services/${id}`
   }
@@ -45,7 +56,7 @@ export function ServiceCard({ id, nombre }: ServiceCardProps) {
         cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
         height: '100%',
-        minHeight: '160px',
+        minHeight: '140px',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-2px)'
@@ -85,6 +96,7 @@ export function ServicesList({ searchQuery = '' }: ServicesListProps) {
   if (loading) return <Text>Cargando servicios...</Text>
   if (error) return <Text c="red">Error: {error}</Text>
 
+<<<<<<< HEAD
   const mappedServices: ServiceCardProps[] = services.map((s: ServiceVO) => ({
     id: s.id,
     nombre: s.name,
@@ -92,11 +104,13 @@ export function ServicesList({ searchQuery = '' }: ServicesListProps) {
   }))
 
   const filteredServices = mappedServices.filter(service => {
+=======
+  const filteredServices = services.filter((service: Service) => {
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
     const query = searchQuery.toLowerCase()
-
     return (
-      service.nombre.toLowerCase().includes(query) ||
-      (service.descripcion?.toLowerCase().includes(query) ?? false)
+      service.name.toLowerCase().includes(query) ||
+      (service.description?.toLowerCase().includes(query) ?? false)
     )
   })
 
@@ -112,8 +126,13 @@ export function ServicesList({ searchQuery = '' }: ServicesListProps) {
 
   return (
     <>
+<<<<<<< HEAD
       {filteredServices.map(service => (
         <ServiceCard key={service.id} {...service} />
+=======
+      {filteredServices.map((service: Service) => (
+        <ServiceCard key={service.id} idService={service.id} nombre={service.name} />
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
       ))}
     </>
   )

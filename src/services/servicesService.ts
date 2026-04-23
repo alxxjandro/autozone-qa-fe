@@ -5,7 +5,7 @@
  * Autozone QA Automation
  */
 import axiosInstance from '@/lib/axios'
-import type { Service } from '@/types/Service.types'
+import type { Service } from '@/types/service.types'
 
 export const getServices = async (): Promise<Service[]> => {
   const { data } = await axiosInstance.get<Service[]>('/services')

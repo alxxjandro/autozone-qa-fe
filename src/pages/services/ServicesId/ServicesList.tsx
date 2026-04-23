@@ -4,7 +4,13 @@
  * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
+<<<<<<< HEAD
 import { Accordion, Button, Card, Group, Stack, Text, UnstyledButton } from '@mantine/core'
+=======
+
+import { Accordion, Button, Card, Group, Stack, Text } from '@mantine/core'
+import { useNavigate } from 'react-router'
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
 
 export interface FeatureItem {
   idFeature: number
@@ -17,6 +23,12 @@ interface FeaturesListProps {
 }
 
 export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
+  const navigate = useNavigate()
+
+  const handleFeatureClick = (id: number) => {
+    navigate(`/features/${id}`)
+  }
+
   return (
     <Stack gap="sm">
       <Group justify="space-between">
@@ -67,7 +79,12 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
                     gap={0}
                     style={{
                       borderBottom: index !== data.length - 1 ? '1px solid #eee' : 'none',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s ease',
                     }}
+                    onClick={() => handleFeatureClick(feature.idFeature)}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f8f9fa')}
+                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
                   >
                     <UnstyledButton
                       component="a"
@@ -96,9 +113,14 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
                       size="xs"
                       color="red"
                       variant="subtle"
+<<<<<<< HEAD
                       mr="md"
                       onClick={e => {
                         e.preventDefault()
+=======
+                      onClick={e => {
+                        e.stopPropagation()
+>>>>>>> 4e6a76f9a84e8466339b7e845cba8db2db76c122
                         onDeleteClick?.(feature.idFeature)
                       }}
                     >
