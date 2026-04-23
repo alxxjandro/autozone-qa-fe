@@ -5,23 +5,23 @@
  * Autozone QA Automation
  */
 
-import { Badge, Box, Button, Modal, Stack, Text } from '@mantine/core'
+import { Badge, Box, Button, Modal, Select, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 import { useState } from 'react'
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
-import { useTestCases } from '@/hooks/useTestCases'
-import type { TestCaseItem } from './TestCasesList'
+import { useTestCases } from '@/hooks/useGetTestCases'
+import type { TestCaseVO } from '@/models/TestCaseVO'
 import { TestCasesList } from './TestCasesList'
 
 export function TestCases() {
-  const { testCases: myTestCases, loading, error } = useTestCases()
+  const { testCases: myTestCases, isLoading, error } = useTestCases()
 
   const [opened, { open, close }] = useDisclosure(false)
 
-  const [selectedTestCase, setSelectedTestCase] = useState<TestCaseItem | null>(null)
+  const [selectedTestCase, setSelectedTestCase] = useState<TestCaseVO | null>(null)
 
-  const handleViewClick = (testCase: TestCaseItem) => {
+  const handleViewClick = (testCase: TestCaseVO) => {
     setSelectedTestCase(testCase)
     open()
   }
@@ -141,8 +141,14 @@ export function TestCases() {
         }
       />
 
-      {loading ? (
-        <Text ta="center" mt="xl">
+      <Select
+        style={{ width: 250 }}
+        placeholder="All features"
+        data={['All features', 'Feature 1', 'Feature 2']}
+      />
+
+      {isLoading ? (
+        <Text ta="center" c="#8C8C94" mt="xl" size="xl">
           Loading...
         </Text>
       ) : myTestCases.length === 0 ? (

@@ -6,35 +6,31 @@
  */
 
 import { Badge, Button, Table } from '@mantine/core'
+import type { TestCaseVO } from '@/models/TestCaseVO'
 
-export type PriorityLevel = 'Low' | 'Medium' | 'High' | 'Critical'
-export type StatusLevel = 'Pass' | 'Fail' | 'Pending'
 export type Type = 'REGRESSION' | 'ON DEMAND'
 
-export interface TestCaseItem {
-  id: number
-  title: string
-  relatedFeature: number
-  description: string
-  type: Type
-  preconditions: string
-  postconditions: string
-  inputs: string
-  steps: string
-}
-
 interface TestCasesListProps {
-  data: TestCaseItem[]
-  onViewClick?: (testCase: TestCaseItem) => void
+  data: TestCaseVO[]
+  onViewClick?: (testCase: TestCaseVO) => void
   onEditClick?: (id: number) => void
 }
 
 export function TestCasesList({ data, onViewClick, onEditClick }: TestCasesListProps) {
   const items = data.map(testCase => (
     <Table.Tr key={testCase.id}>
-      <Table.Td style={{ color: '#F26621' }}>{testCase.id}</Table.Td>
-      <Table.Td style={{ color: '#1A1A1F' }}>{testCase.title}</Table.Td>
-      <Table.Td>
+      <Table.Td style={{ textAlign: 'center', color: '#F26621' }}>{testCase.id}</Table.Td>
+      <Table.Td
+        style={{
+          whiteSpace: 'normal',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word',
+          color: '#1A1A1F',
+        }}
+      >
+        {testCase.title}
+      </Table.Td>
+      <Table.Td style={{ textAlign: 'center' }}>
         <Badge
           color={testCase.type === 'REGRESSION' ? '#FFF4ED' : '#E5F7ED'}
           c={testCase.type === 'REGRESSION' ? '#F26621' : '#1F8F4D'}
@@ -43,6 +39,9 @@ export function TestCasesList({ data, onViewClick, onEditClick }: TestCasesListP
         >
           {testCase.type}
         </Badge>
+      </Table.Td>
+      <Table.Td style={{ textAlign: 'center', color: '#1A1A1F' }}>
+        {testCase.relatedFeature}
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
         <Button
@@ -68,13 +67,17 @@ export function TestCasesList({ data, onViewClick, onEditClick }: TestCasesListP
   ))
 
   return (
-    <Table highlightOnHover style={{ backgroundColor: '#ffffff', color: 'black' }}>
+    <Table
+      highlightOnHover
+      style={{ tableLayout: 'fixed', width: '100%', backgroundColor: '#ffffff', color: 'black' }}
+    >
       <Table.Thead>
         <Table.Tr style={{ backgroundColor: '#F7F6F4', color: '#8C8C94' }}>
-          <Table.Th>ID</Table.Th>
-          <Table.Th>Test Case Name</Table.Th>
-          <Table.Th>Type</Table.Th>
-          <Table.Th style={{ textAlign: 'center' }}>Actions</Table.Th>
+          <Table.Th style={{ width: '50px', textAlign: 'center' }}>ID</Table.Th>
+          <Table.Th style={{ width: '300px' }}>Test Case Name</Table.Th>
+          <Table.Th style={{ width: '100px', textAlign: 'center' }}>Type</Table.Th>
+          <Table.Th style={{ width: '300px', textAlign: 'center' }}>Related feature</Table.Th>
+          <Table.Th style={{ width: '150px', textAlign: 'center' }}>Actions</Table.Th>
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>{items}</Table.Tbody>
