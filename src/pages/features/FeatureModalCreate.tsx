@@ -28,7 +28,7 @@ export function FeatureModalCreate() {
 
   const form = useForm<FormValues>({
     initialValues: {
-      featureName: '',
+      name: '',
       description: '',
       idServices: '',
     },
@@ -84,7 +84,7 @@ export function FeatureModalCreate() {
               label="FEATURE NAME"
               placeholder="e.g. Refund Processing"
               withAsterisk
-              {...form.getInputProps('featureName')}
+              {...form.getInputProps('name')}
               styles={{ label: labelStyles.label }}
             />
 

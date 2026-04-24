@@ -9,6 +9,7 @@ import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
 import { useFeatures } from '@/hooks/useFeatures'
 import { FeatureModalCreate } from './FeatureModalCreate'
 import { FeaturesList } from './FeaturesList'
+import { FeatureModalCreate } from './FeatureModalCreate'
 
 export function Features() {
   const { features } = useFeatures()

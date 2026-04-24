@@ -12,7 +12,7 @@ import { Notifications } from '@mantine/notifications'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
-import { router } from './router' // Import the router configuration
+import { router } from './router'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
