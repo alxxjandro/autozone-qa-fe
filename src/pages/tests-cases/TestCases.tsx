@@ -136,14 +136,12 @@ export function TestCases() {
       </Modal.Root>
 
       <TitleHeader
-        title="Checkout Flow — Test Cases"
+        title="Test Cases"
         metaDetails={[`${myTestCases.length} test cases`]}
         breadcrumbs={[
           { title: 'Releases', href: '/releases' },
-          { title: 'Q2 2026 Regression', href: '#' },
-          { title: 'Order Management', href: '#' },
-          { title: 'Features', href: '#' },
-          { title: 'Checkout Flow', href: '#' },
+          { title: 'Services', href: '/services' },
+          { title: 'Features', href: '/features' },
           { title: 'Test Cases', href: '#' },
         ]}
         actionComponent={
