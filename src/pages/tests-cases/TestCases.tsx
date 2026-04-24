@@ -5,7 +5,6 @@
  * Autozone QA Automation
  */
 
-QAZ2-4
 import { Badge, Box, Button, Modal, Select, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'

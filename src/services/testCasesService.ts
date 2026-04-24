@@ -7,7 +7,7 @@
 
 import type { CreateTestCaseRequest, TestCase } from '@/types/testcase.types'
 import { testCaseSchema } from '@/types/testcase.types'
-import { apiService } from './apiService'
+import { apiService } from './api.service'
 
 const BASE_URL = '/test-cases'
 
