@@ -5,10 +5,9 @@
  * Autozone QA Automation
  */
 
-import { Button } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
 import { useFeatures } from '@/hooks/useFeatures'
+import { FeatureModalCreate } from './FeatureModalCreate'
 import { FeaturesList } from './FeaturesList'
 
 export function Features() {
@@ -25,17 +24,7 @@ export function Features() {
           { title: 'Order Management', href: '#' },
           { title: 'Features', href: '#' },
         ]}
-        actionComponent={
-          <Button
-            leftSection={<IconPlus size={16} stroke={2.5} />}
-            color="orange.6"
-            radius="md"
-            size="md"
-            fw={600}
-          >
-            Add Feature
-          </Button>
-        }
+        actionComponent={<FeatureModalCreate />}
       />
 
       <FeaturesList data={features} />
