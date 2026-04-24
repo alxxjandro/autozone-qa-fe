@@ -8,16 +8,11 @@
 import { Button, Group, Select, Stack, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { z } from 'zod'
 import { ModalTemplate } from '@/components/ui/ModalTemplate/ModalTemplate'
 import { useCreateFeature } from '@/hooks/useCreateFeature'
-import { useGetServices } from '@/hooks/useGetServices'
-
-export const schema = z.object({
-  name: z.string().min(1, 'El nombre es obligatorio'),
-  description: z.string().nullable().or(z.literal('')),
-  idServices: z.string().min(1, 'Selecciona un servicio'),
-})
+import { useFeatureFormResources } from '@/hooks/useFeatureFormResources'
+import type { FormValues } from '@/utils/schemas/createFeature.schema'
+import { featureSchema } from '@/utils/schemas/createFeature.schema'
 
 const labelStyles = {
   label: {
@@ -27,27 +22,43 @@ const labelStyles = {
   },
 }
 
-type FormValues = z.infer<typeof schema>
-
 export function FeatureModalCreate() {
-  const { createFeature, loading } = useCreateFeature()
-  const { services, loading: loadingServices } = useGetServices()
+  const { createFeature, loading: creating } = useCreateFeature()
+  const { servicesOptions, loading: loadingServices } = useFeatureFormResources()
 
   const form = useForm<FormValues>({
     initialValues: {
-      name: '',
+      featureName: '',
       description: '',
       idServices: '',
     },
-    validate: {
-      name: value => (value.trim().length < 1 ? 'El nombre es obligatorio' : null),
-      idServices: value => (!value ? 'Selecciona un servicio' : null),
+    validate: values => {
+      const result = featureSchema.safeParse(values)
+      if (result.success) return {}
+      const formErrors: Record<string, string> = {}
+      result.error.issues.forEach(issue => {
+        const path = issue.path.join('.')
+        if (!formErrors[path]) formErrors[path] = issue.message
+      })
+      return formErrors
     },
+    validateInputOnChange: true,
   })
 
   const handleSubmit = async (values: FormValues) => {
+    const validation = featureSchema.safeParse(values)
+
+    if (!validation.success) {
+      notifications.show({
+        title: 'Validation Error',
+        message: 'Please check the form fields',
+        color: 'red',
+      })
+      return
+    }
+
     const payload = {
-      featureName: values.name,
+      featureName: values.featureName,
       featureDescription: values.description || '',
       idService: parseInt(values.idServices),
     }
@@ -56,8 +67,8 @@ export function FeatureModalCreate() {
 
     if (result) {
       notifications.show({
-        title: '¡Éxito!',
-        message: 'Feature creado correctamente',
+        title: 'Success!',
+        message: 'Feature created successfully',
         color: 'teal',
       })
       form.reset()
@@ -73,17 +84,14 @@ export function FeatureModalCreate() {
               label="FEATURE NAME"
               placeholder="e.g. Refund Processing"
               withAsterisk
-              {...form.getInputProps('name')}
+              {...form.getInputProps('featureName')}
               styles={{ label: labelStyles.label }}
             />
 
             <Select
               label="SERVICE NAME"
-              placeholder="Select a service..." 
-              data={services.map((s: any) => ({
-                value: s.id.toString(),
-                label: s.serviceName || s.name || 'Unknown',
-              }))}  
+              placeholder="Select a service..."
+              data={servicesOptions}
               loading={loadingServices}
               disabled={loadingServices}
               withAsterisk
@@ -107,11 +115,11 @@ export function FeatureModalCreate() {
                 color="gray"
                 radius="md"
                 onClick={() => form.reset()}
-                disabled={loading}
+                disabled={creating || loadingServices}
               >
                 Cancel
               </Button>
-              <Button type="submit" bg="#f46624" radius="md" loading={loading}>
+              <Button type="submit" bg="#f46624" radius="md" loading={creating}>
                 Create Feature
               </Button>
             </Group>

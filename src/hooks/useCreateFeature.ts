@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react'
 import { featureService } from '@/services/features.service'
-import type { Feature, CreateFeatureRequest } from '../types/feature.types'
+import type { CreateFeatureRequest, Feature } from '../types/feature.types'
 
 /**
  * Interfaz para la respuesta del hook de creación

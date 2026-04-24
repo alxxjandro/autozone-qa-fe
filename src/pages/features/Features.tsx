@@ -7,8 +7,8 @@
 
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
 import { useFeatures } from '@/hooks/useFeatures'
-import { FeaturesList } from './FeaturesList'
 import { FeatureModalCreate } from './FeatureModalCreate'
+import { FeaturesList } from './FeaturesList'
 
 export function Features() {
   const { features } = useFeatures()
