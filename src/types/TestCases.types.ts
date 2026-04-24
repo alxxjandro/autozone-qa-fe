@@ -4,12 +4,9 @@
  * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
-
 import { z } from 'zod'
 
-export const testCaseSchema = z.object({
-  id: z.number(),
-  code: z.string().optional(),
+export const createTestCaseSchema = z.object({
   title: z
     .string()
     .min(1, { message: 'El nombre es obligatorio' })
@@ -30,16 +27,14 @@ export const testCaseSchema = z.object({
     .min(1, { message: 'La salida esperada es obligatoria' })
     .max(300, { message: 'Máximo 300 caracteres' }),
   type: z.enum(['REGRESSION', 'ON_DEMAND']),
+})
+
+export type CreateTestCaseRequest = z.infer<typeof createTestCaseSchema>
+
+export const testCaseSchema = createTestCaseSchema.extend({
+  id: z.number(),
+  code: z.string().optional(),
   active: z.boolean().optional(),
 })
 
 export type TestCase = z.infer<typeof testCaseSchema>
-
-export const testCasesSchema = z.array(testCaseSchema)
-
-export const createTestCaseSchema = testCaseSchema.omit({
-  id: true,
-  active: true,
-  featureName: true,
-})
-export type CreateTestCaseRequest = z.infer<typeof createTestCaseSchema>
