@@ -17,11 +17,19 @@ export const testCaseSchema = z.object({
   postconditions: z.string(),
   inputs: z.string(),
   steps: z.string(),
+  code: z.string().nullable().optional(),
+  expectedOutput: z.string(),
+  active: z.boolean().nullable().optional(),
+  featureName: z.string().nullable().optional(),
 })
 
 export type TestCase = z.infer<typeof testCaseSchema>
 
 export const testCasesSchema = z.array(testCaseSchema)
 
-export const createTestCaseSchema = testCaseSchema.omit({ id: true })
+export const createTestCaseSchema = testCaseSchema.omit({
+  id: true,
+  active: true,
+  featureName: true,
+})
 export type CreateTestCaseRequest = z.infer<typeof createTestCaseSchema>

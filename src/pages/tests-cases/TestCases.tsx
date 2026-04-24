@@ -21,6 +21,8 @@ export function TestCases() {
 
   const [selectedTestCase, setSelectedTestCase] = useState<TestCaseVO | null>(null)
 
+  const [selectedFeature, setSelectedFeature] = useState<string | null>('ALL')
+
   const handleViewClick = (testCase: TestCaseVO) => {
     setSelectedTestCase(testCase)
     open()
@@ -30,6 +32,23 @@ export function TestCases() {
     setSelectedTestCase(null)
     close()
   }
+
+  const featureOptions = [
+    { value: 'ALL', label: 'All features' },
+    ...Array.from(
+      new Set(myTestCases.map(tc => tc.featureName ?? `Feature ${tc.relatedFeature}`))
+    ).map(feature => ({
+      value: feature,
+      label: feature,
+    })),
+  ]
+
+  const filteredTestCases =
+    selectedFeature === 'ALL' || selectedFeature === null
+      ? myTestCases
+      : myTestCases.filter(
+          tc => (tc.featureName ?? `Feature ${tc.relatedFeature}`) === selectedFeature
+        )
 
   if (error) {
     return (
@@ -62,7 +81,7 @@ export function TestCases() {
                 RELATED FEATURE
               </Text>
               <Text size="sm" c="#1A1A1F" mb="xs">
-                {selectedTestCase?.relatedFeature}
+                {selectedTestCase?.featureName ?? selectedTestCase?.relatedFeature}
               </Text>
               <Text size="md" c="#8C8C94">
                 DESCRIPTION
@@ -144,19 +163,25 @@ export function TestCases() {
       <Select
         style={{ width: 250 }}
         placeholder="All features"
-        data={['All features', 'Feature 1', 'Feature 2']}
+        data={featureOptions}
+        value={selectedFeature}
+        onChange={setSelectedFeature}
       />
 
       {isLoading ? (
         <Text ta="center" c="#8C8C94" mt="xl" size="xl">
           Loading...
         </Text>
-      ) : myTestCases.length === 0 ? (
+      ) : filteredTestCases.length === 0 ? (
         <Text ta="center" c="#8C8C94" mt="xl" size="xl">
           No test cases available
         </Text>
       ) : (
-        <TestCasesList data={myTestCases} onViewClick={handleViewClick} onEditClick={() => {}} />
+        <TestCasesList
+          data={filteredTestCases}
+          onViewClick={handleViewClick}
+          onEditClick={() => {}}
+        />
       )}
     </div>
   )

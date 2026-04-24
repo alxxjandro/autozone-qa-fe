@@ -17,6 +17,10 @@ export class TestCaseVO {
   readonly postconditions: string
   readonly inputs: string
   readonly steps: string
+  readonly code?: string | null
+  readonly expectedOutput: string
+  readonly active?: boolean | null
+  readonly featureName?: string | null
 
   constructor(data: TestCase) {
     this.id = data.id
@@ -28,6 +32,10 @@ export class TestCaseVO {
     this.postconditions = data.postconditions
     this.inputs = data.inputs
     this.steps = data.steps
+    this.code = data.code
+    this.expectedOutput = data.expectedOutput
+    this.active = data.active
+    this.featureName = data.featureName
   }
 
   getDisplayName(): string {

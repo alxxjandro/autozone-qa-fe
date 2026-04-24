@@ -41,7 +41,7 @@ export function TestCasesList({ data, onViewClick, onEditClick }: TestCasesListP
         </Badge>
       </Table.Td>
       <Table.Td style={{ textAlign: 'center', color: '#1A1A1F' }}>
-        {testCase.relatedFeature}
+        {testCase.featureName ?? testCase.relatedFeature}
       </Table.Td>
       <Table.Td style={{ textAlign: 'center' }}>
         <Button
