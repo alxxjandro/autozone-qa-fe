@@ -5,32 +5,36 @@
  * Autozone QA Automation
  */
 
-import type { Release } from '@/types/Release.types'
+import type { ReleaseCreateVO } from '@/models/ReleaseCreateVO'
+import type { CreateReleasesRequest, FormValues } from '@/utils/schemas/release.schema'
+import { releaseSchema } from '@/utils/schemas/release.schema'
 import { apiService } from './api.service'
 
-/**
- * Clase que encapsula las llamadas a la API para Releases.
- * Utiliza un prefijo de ruta común para todas las peticiones.
- */
-class ReleaseService {
-  private readonly BASE_PATH = '/releases'
+const BASE_URL = '/releases'
 
-  /**
-   * Obtiene todos los releases desde el endpoint configurado.
-   * @returns {Promise<Release[]>} Promesa que resuelve a una lista de releases.
-   */
-  getAll = async (): Promise<Release[]> => {
-    return apiService.get<Release[]>(this.BASE_PATH)
-  }
+export const releaseService = {
+  getAll: async (): Promise<FormValues[]> => {
+    const data = await apiService.get<unknown>(BASE_URL)
+    return releaseSchema.array().parse(data)
+  },
 
-  /**
-   * Busca un release específico por su identificador.
-   * @param {number} id - Identificador único del release.
-   * @returns {Promise<Release>} Promesa con los datos del release.
-   */
-  getById = async (id: number): Promise<Release> => {
-    return apiService.get<Release>(`${this.BASE_PATH}/${id}`)
-  }
+  getById: async (id: string): Promise<FormValues> => {
+    const data = await apiService.get<unknown>(`${BASE_URL}/${id}`)
+    return releaseSchema.parse(data)
+  },
+
+  create: async (payload: ReleaseCreateVO): Promise<FormValues> => {
+    console.log(payload)
+    const data = await apiService.post<unknown>(BASE_URL, payload)
+    return releaseSchema.parse(data)
+  },
+
+  update: async (id: string, payload: Partial<CreateReleasesRequest>): Promise<FormValues> => {
+    const data = await apiService.put<unknown>(`${BASE_URL}/${id}`, payload)
+    return releaseSchema.parse(data)
+  },
+
+  remove: async (id: string): Promise<void> => {
+    await apiService.delete(`${BASE_URL}/${id}`)
+  },
 }
-
-export const releaseService = new ReleaseService()
