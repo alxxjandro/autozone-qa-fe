@@ -35,15 +35,24 @@ export function BaseCard({ children, onClick }: BaseCardProps) {
         e.currentTarget.style.transform = 'translateY(0)'
         e.currentTarget.style.boxShadow = ''
       }}
+      data-testid="add-service-card"
     >
       <Stack align="center" justify="center" h="100%" gap="xs">
-        <ActionIcon variant="light" size="xl" radius="xl" color="orange">
+        <ActionIcon
+          data-testid="add-service-card-icon"
+          variant="light"
+          size="xl"
+          radius="xl"
+          color="orange"
+        >
           <IconSquareRoundedPlus style={{ width: '70%', height: '70%' }} />
         </ActionIcon>
 
-        <Text fw={600}>{children}</Text>
+        <Text data-testid="add-service-card-title" fw={600}>
+          {children}
+        </Text>
 
-        <Text size="xs" c="dimmed" ta="center">
+        <Text data-testid="add-service-card-description" size="xs" c="dimmed" ta="center">
           Create a new service
         </Text>
       </Stack>
