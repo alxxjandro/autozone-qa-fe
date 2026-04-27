@@ -1,5 +1,10 @@
 /**
  * @file Releases.tsx
+ * @description Componente principal de la vista de Releases.
+ * Gestiona la visualización, filtrado por estado, búsqueda y ordenamiento de lanzamientos.
+ * Conecta con el backend de Autozone QA para obtener datos en tiempo real.
+ * * @author Tecnológico de Monterrey — Campus Chihuahua
+ * @version 1.0.0 (2026)
  */
 
 import {
@@ -23,14 +28,33 @@ import { ButtonContentModal } from '@/components/layout/ButtonContentModal/Butto
 import { TitleHeader } from '@/components/layout/TitleHeader/TitleHeader'
 import { useGetAllReleases } from '@/hooks/useGetReleases'
 
+/**
+ * Componente funcional que renderiza la página de gestión de Releases.
+ * * @returns {JSX.Element} La vista de releases con controles de filtrado y grid de tarjetas.
+ */
 export function Releases() {
+  /** Hook personalizado para obtener releases y estados de carga/error del backend */
   const { releases, loading, error, refetch } = useGetAllReleases()
+
+  /** @type {'All' | ReleaseStatus} Estado seleccionado para filtrar la lista */
   const [statusFilter, setStatusFilter] = useState<'All' | ReleaseStatus>('All')
+
+  /** @type {string} Query de búsqueda por nombre del release */
   const [searchQuery, setSearchQuery] = useState('')
+
+  /** @type {string | null} Criterio de ordenamiento ('Newest' | 'Oldest') */
   const [sortBy, setSortBy] = useState<string | null>('Newest')
 
+  /**
+   * Memoriza la lista de releases procesada.
+   * Realiza tres pasos correlativos:
+   * 1. Mapeo de VO del Backend a estructura compatible con componentes UI.
+   * 2. Filtrado por estatus y búsqueda de texto.
+   * 3. Ordenamiento cronológico según la fecha de creación.
+   * * @returns {ReleaseData[]} Lista de releases filtrada y ordenada lista para renderizar.
+   */
   const filteredAndSortedReleases = useMemo(() => {
-    // Mapeo dinámico: Backend (Release) -> Frontend (ReleaseData)
+    // 1. Mapeo dinámico: Backend (Release) -> Frontend (ReleaseData)
     const mapped: ReleaseData[] = releases.map(r => ({
       title: r.releaseName,
       objective: r.releaseDescription,
@@ -39,11 +63,12 @@ export function Releases() {
       creationDate: r.releaseCreationDate,
       releaseDate: r.releaseLaunchDate,
       status: r.releaseStatus,
-      // Extraemos el primer servicio y su ID para el enlace
+      // Extraemos el primer servicio y su ID para la navegación dinámica
       service: r.releaseServices?.[0] || 'Global',
       serviceId: r.releaseServiceIds?.[0] || null,
     }))
 
+    // 2. Filtrado y 3. Ordenamiento
     return mapped
       .filter(release => {
         const matchesStatus = statusFilter === 'All' || release.status === statusFilter
@@ -57,6 +82,7 @@ export function Releases() {
       })
   }, [releases, statusFilter, searchQuery, sortBy])
 
+  // --- Renderizado de Estados de Carga ---
   if (loading) {
     return (
       <Center h={400}>
@@ -70,6 +96,7 @@ export function Releases() {
     )
   }
 
+  // --- Renderizado de Estados de Error ---
   if (error) {
     return (
       <Center h={450}>
@@ -99,6 +126,7 @@ export function Releases() {
     )
   }
 
+  // --- Vista Principal ---
   return (
     <div>
       <TitleHeader
@@ -112,6 +140,7 @@ export function Releases() {
         }
       />
 
+      {/* Barra de Herramientas: Filtros, Buscador y Sort */}
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', width: '100%' }}>
         {(['All', 'Active', 'Draft', 'Progress'] as const).map(s => (
           <Button
@@ -154,15 +183,19 @@ export function Releases() {
         />
       </div>
 
+      {/* Grid de Contenido: Tarjetas de Release */}
       <div style={{ marginTop: '20px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
         {filteredAndSortedReleases.map((item, index) => (
           <ButtonContentModal
             key={`${item.title}-${index}`}
             data={item}
-            onStatusChange={() => {}}
+            onStatusChange={() => {
+              /** @todo Implementar actualización de estatus vía API */
+            }}
           />
         ))}
 
+        {/* Empty State */}
         {filteredAndSortedReleases.length === 0 && (
           <Box style={{ width: '100%', textAlign: 'center' }} mt={50}>
             <Text c="dimmed" fz="lg" fw={500}>
