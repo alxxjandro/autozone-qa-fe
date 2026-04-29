@@ -32,6 +32,7 @@ import {
 } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router'
+import { useGetUserById } from '@/hooks/userGetUserById'
 import classes from './Sidebar.module.css'
 
 /**
@@ -59,6 +60,13 @@ export function Sidebar() {
 
   const [active, setActive] = useState(location.pathname)
   const [popoverOpened, setPopoverOpened] = useState(false)
+
+  // ID=1 placeholder — replace with auth context user ID when auth is implemented
+  const { user } = useGetUserById(1)
+
+  const fullName = user ? `${user.name} ${user.lastname}` : '...'
+  const initials = user ? `${user.name[0]}${user.lastname[0]}`.toUpperCase() : '?'
+  const roleLabel = user?.role?.permisionlevel ?? '—'
 
   /**
    * Mapeo de navData para transformar objetos de configuración en componentes NavLink de Mantine.
@@ -119,14 +127,14 @@ export function Sidebar() {
             <UnstyledButton w="100%" onClick={() => setPopoverOpened(o => !o)}>
               <Group>
                 <Avatar color="orange" radius="xl" size="lg">
-                  RS
+                  {initials}
                 </Avatar>
                 <Box>
                   <Text fw={600} size="sm">
-                    Santiago Estrada
+                    {fullName}
                   </Text>
                   <Text size="xs" c="dimmed">
-                    System Admin
+                    {roleLabel}
                   </Text>
                 </Box>
               </Group>
@@ -136,14 +144,14 @@ export function Sidebar() {
           <Popover.Dropdown p={0}>
             <Group p="xs" gap="xs" wrap="nowrap">
               <Avatar color="orange" radius="xl" size="md">
-                RS
+                {initials}
               </Avatar>
               <Box>
                 <Text fw={600} size="sm">
-                  Santiago Estrada
+                  {fullName}
                 </Text>
                 <Badge color="violet" variant="light" size="sm">
-                  System Admin
+                  {roleLabel}
                 </Badge>
               </Box>
             </Group>
