@@ -12,6 +12,7 @@ import { FeatureDetail } from './pages/features/FeatureDetail/FeatureDetail'
 import { Features } from './pages/features/Features'
 import { Generate } from './pages/generate/Generate'
 import { Home } from './pages/home/Home'
+import { Login } from './pages/login/Login'
 import { Releases } from './pages/releases/Releases'
 import { Reports } from './pages/reports/Reports'
 import { Services } from './pages/services/Services'
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: 'users',
         element: <Users />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
       },
     ],
   },

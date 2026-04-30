@@ -1,0 +1,15 @@
+.container {
+  display: stretch;           /* Estira el contenedor para llenar la pantalla */
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;     /* Centrado vertical */
+  height: 110vh;           /* Altura total de la pantalla */
+  width: 110vw;            /* Ancho total de la pantalla */
+  overflow: hidden;        /* Evita scroll innecesario */
+}
+
+.responsive-img {
+  display: stretch; 
+  max-width: 105%;         /* No se sale del ancho */
+  max-height: 105%;        /* No se sale del alto */
+  object-fit: contain;     /* Mantiene la proporción original */
+}
