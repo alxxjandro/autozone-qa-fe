@@ -54,6 +54,7 @@ export function ServiceCard({ id, nombre }: ServiceCardProps) {
         e.currentTarget.style.transform = 'translateY(0)'
         e.currentTarget.style.boxShadow = ''
       }}
+      data-testid={`service-card-${id}`}
     >
       <Stack align="center" justify="center" h="100%" gap="xs">
         <Box
@@ -66,7 +67,7 @@ export function ServiceCard({ id, nombre }: ServiceCardProps) {
           {getServiceIcon(nombre)}
         </Box>
 
-        <Text fw={600} ta="center">
+        <Text data-testid={`service-card-title-${id}`} fw={600} ta="center">
           {nombre}
         </Text>
       </Stack>
@@ -94,8 +95,14 @@ export function ServicesList({ searchQuery = '' }: ServicesListProps) {
 
   if (filteredServices.length === 0) {
     return (
-      <Card withBorder p="xl" radius="md" style={{ gridColumn: '1 / -1' }}>
-        <Text ta="center" c="dimmed">
+      <Card
+        data-testid="no-services-found-card"
+        withBorder
+        p="xl"
+        radius="md"
+        style={{ gridColumn: '1 / -1' }}
+      >
+        <Text data-testid="no-services-found-text" ta="center" c="dimmed">
           No services found matching your criteria.
         </Text>
       </Card>

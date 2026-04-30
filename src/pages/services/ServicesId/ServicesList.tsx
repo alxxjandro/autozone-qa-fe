@@ -33,7 +33,7 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
           Features
         </Text>
 
-        <Button size="xs" color="orange.6" radius="md">
+        <Button size="xs" color="orange.6" radius="md" data-testid="service-id-add-feature-button">
           + Add Feature
         </Button>
       </Group>
@@ -42,6 +42,7 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
         <Accordion
           variant="filled"
           defaultValue="features"
+          data-testid="service-id-features-accordion"
           styles={{
             control: {
               backgroundColor: 'var(--mantine-color-orange-6)',
@@ -55,7 +56,7 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
           }}
         >
           <Accordion.Item value="features" style={{ border: 'none' }}>
-            <Accordion.Control>
+            <Accordion.Control data-testid="service-id-features-accordion-control">
               <Group gap="xs">
                 <Text fw={500} size="sm">
                   Linked features
@@ -74,6 +75,7 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
                     wrap="nowrap"
                     justify="space-between"
                     gap={0}
+                    data-testid={`service-id-feature-row-${feature.idFeature}`}
                     style={{
                       borderBottom: index !== data.length - 1 ? '1px solid #eee' : 'none',
                       cursor: 'pointer',
@@ -89,6 +91,7 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
                   >
                     <UnstyledButton
                       p="sm"
+                      data-testid={`service-id-feature-open-button-${feature.idFeature}`}
                       style={{
                         flex: 1,
                         display: 'flex',
@@ -110,6 +113,7 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
                       size="xs"
                       color="red"
                       variant="subtle"
+                      data-testid={`service-id-feature-delete-button-${feature.idFeature}`}
                       onClick={e => {
                         e.stopPropagation()
                         onDeleteClick?.(feature.idFeature)
@@ -121,7 +125,13 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
                 ))}
 
                 {data.length === 0 && (
-                  <Text size="sm" p="md" c="dimmed" ta="center">
+                  <Text
+                    size="sm"
+                    p="md"
+                    c="dimmed"
+                    ta="center"
+                    data-testid="service-id-features-empty-message"
+                  >
                     No hay features vinculadas para este servicio
                   </Text>
                 )}

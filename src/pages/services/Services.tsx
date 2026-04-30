@@ -28,6 +28,7 @@ export function Services() {
         breadcrumbs={[{ title: 'Services', href: '/services' }]}
         actionComponent={
           <Button
+            data-testid="add-service-button"
             leftSection={<IconPlus size={16} stroke={2.5} />}
             color="orange.6"
             radius="md"
@@ -53,6 +54,7 @@ export function Services() {
               value={searchQuery}
               onChange={setSearchQuery}
               leftSection={<IconSearch size={16} stroke={2.5} />}
+              data-testid="service-search-input"
             />
           </Group>
 

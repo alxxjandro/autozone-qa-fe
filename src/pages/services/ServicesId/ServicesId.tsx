@@ -16,13 +16,13 @@ export function ServicesId() {
 
   const { service, features, loading, error } = useGetServiceById(id)
 
-  if (!id) return <Text p="xl">ID de servicio no válido</Text>
+  if (!id) return <Text p="xl">ID de servicio no valido</Text>
 
   if (loading)
     return (
-      <Group p="xl" justify="center">
-        <Loader size="sm" color="orange.6" />
-        <Text size="sm" c="dimmed">
+      <Group p="xl" justify="center" data-testid="service-id-loading-state">
+        <Loader size="sm" color="orange.6" data-testid="service-id-loading-spinner" />
+        <Text size="sm" c="dimmed" data-testid="service-id-loading-text">
           Cargando información...
         </Text>
       </Group>
@@ -30,12 +30,17 @@ export function ServicesId() {
 
   if (error)
     return (
-      <Text c="red" p="xl">
+      <Text c="red" p="xl" data-testid="service-id-error-message">
         Error: {error}
       </Text>
     )
 
-  if (!service) return <Text p="xl">El servicio no existe</Text>
+  if (!service)
+    return (
+      <Text p="xl" data-testid="service-id-not-found-message">
+        El servicio no existe
+      </Text>
+    )
 
   const featureItems = features.map(f => ({
     idFeature: f.id,
@@ -43,7 +48,7 @@ export function ServicesId() {
   }))
 
   return (
-    <Container size="xl">
+    <Container size="xl" data-testid="service-id-page">
       <Stack gap="xl">
         <Group justify="space-between" align="flex-start">
           <TitleHeader
@@ -55,24 +60,24 @@ export function ServicesId() {
             ]}
           />
 
-          <Group gap="xs">
-            <Button size="xs" color="orange.6">
+          <Group gap="xs" data-testid="service-id-actions">
+            <Button size="xs" color="orange.6" data-testid="service-id-edit-button">
               Edit
             </Button>
-            <Button size="xs" color="red" variant="outline">
+            <Button size="xs" color="red" variant="outline" data-testid="service-id-delete-button">
               Delete
             </Button>
           </Group>
         </Group>
 
-        <Stack gap={4}>
+        <Stack gap={4} data-testid="service-id-description-section">
           <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
             Description
           </Text>
-          <Text size="sm">{service.description || 'Sin descripción'}</Text>
+          <Text size="sm">{service.description || 'Sin descripcion'}</Text>
         </Stack>
 
-        <Stack gap={4}>
+        <Stack gap={4} data-testid="service-id-urls-section">
           <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
             URLs
           </Text>
@@ -86,15 +91,20 @@ export function ServicesId() {
           </Stack>
         </Stack>
 
-        <Divider />
+        <Divider data-testid="service-id-features-divider" />
 
         <ServicesList data={featureItems} onDeleteClick={() => {}} />
 
-        <Stack gap="sm" mt="md">
+        <Stack gap="sm" mt="md" data-testid="service-id-last-releases-section">
           <Text fw={600} size="sm" c="dimmed" tt="uppercase">
             Last Releases
           </Text>
-          <Text size="sm" c="dimmed" fs="italic">
+          <Text
+            size="sm"
+            c="dimmed"
+            fs="italic"
+            data-testid="service-id-last-releases-empty-message"
+          >
             No hay releases recientes para mostrar.
           </Text>
         </Stack>
