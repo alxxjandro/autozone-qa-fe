@@ -5,7 +5,9 @@
  * Autozone QA Automation
  */
 
-import { Accordion, Button, Card, Group, Stack, Text } from '@mantine/core'
+// 1. Se agregó UnstyledButton a la importación
+import { Accordion, Button, Card, Group, Stack, Text, UnstyledButton } from '@mantine/core'
+import { useNavigate } from 'react-router'
 
 export interface FeatureItem {
   idFeature: number
@@ -18,6 +20,12 @@ interface FeaturesListProps {
 }
 
 export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
+  const navigate = useNavigate()
+
+  const handleFeatureClick = (id: number) => {
+    navigate(`/features/${id}`)
+  }
+
   return (
     <Stack gap="sm">
       <Group justify="space-between">
@@ -59,31 +67,53 @@ export function ServicesList({ data, onDeleteClick }: FeaturesListProps) {
             </Accordion.Control>
 
             <Accordion.Panel>
-              <Stack gap={0} pt="xs">
+              <Stack gap={0}>
                 {data.map((feature, index) => (
                   <Group
                     key={feature.idFeature}
-                    px="md"
-                    py="sm"
+                    wrap="nowrap"
                     justify="space-between"
+                    gap={0}
                     style={{
                       borderBottom: index !== data.length - 1 ? '1px solid #eee' : 'none',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s ease',
                     }}
+                    onClick={() => handleFeatureClick(feature.idFeature)}
+                    onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) =>
+                      (e.currentTarget.style.backgroundColor = '#f8f9fa')
+                    }
+                    onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) =>
+                      (e.currentTarget.style.backgroundColor = 'transparent')
+                    }
                   >
-                    <Group gap="sm">
-                      <Text size="xs" c="orange.6" fw={700}>
-                        F{feature.idFeature}
-                      </Text>
-                      <Text size="sm" fw={400}>
-                        {feature.nombre}
-                      </Text>
-                    </Group>
+                    <UnstyledButton
+                      p="sm"
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        transition: 'background 0.2s ease',
+                      }}
+                    >
+                      <Group gap="sm">
+                        <Text size="xs" c="orange.6" fw={700}>
+                          F{feature.idFeature}
+                        </Text>
+                        <Text size="sm" fw={400} c="dark">
+                          {feature.nombre}
+                        </Text>
+                      </Group>
+                    </UnstyledButton>
 
                     <Button
                       size="xs"
                       color="red"
                       variant="subtle"
-                      onClick={() => onDeleteClick?.(feature.idFeature)}
+                      onClick={e => {
+                        e.stopPropagation()
+                        onDeleteClick?.(feature.idFeature)
+                      }}
                     >
                       Eliminar
                     </Button>

@@ -6,13 +6,12 @@
  */
 import { Box, Card, Stack, Text } from '@mantine/core'
 import { IconCode, IconDatabase, IconDeviceDesktop, IconServer } from '@tabler/icons-react'
-import { useGetServices } from '@/hooks/servicesGetServices'
-import type { Service } from '@/types/Service.types'
+import { useGetServices } from '@/hooks/useGetServices'
+import type { Service } from '@/types/service.types'
 
 interface ServiceCardProps {
-  idService: number
+  id: number
   nombre: string
-  descripcion?: string
 }
 
 const getServiceIcon = (nombre: string) => {
@@ -28,9 +27,9 @@ const getServiceIcon = (nombre: string) => {
   }
 }
 
-export function ServiceCard({ idService, nombre, descripcion }: ServiceCardProps) {
+export function ServiceCard({ id, nombre }: ServiceCardProps) {
   const handleCardClick = () => {
-    window.location.href = `/services/${idService}`
+    window.location.href = `/services/${id}`
   }
 
   return (
@@ -45,7 +44,7 @@ export function ServiceCard({ idService, nombre, descripcion }: ServiceCardProps
         cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
         height: '100%',
-        minHeight: '160px',
+        minHeight: '140px',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-2px)'
@@ -70,12 +69,6 @@ export function ServiceCard({ idService, nombre, descripcion }: ServiceCardProps
         <Text fw={600} ta="center">
           {nombre}
         </Text>
-
-        {descripcion && (
-          <Text size="xs" c="dimmed" ta="center" lineClamp={2}>
-            {descripcion}
-          </Text>
-        )}
       </Stack>
     </Card>
   )
@@ -91,18 +84,11 @@ export function ServicesList({ searchQuery = '' }: ServicesListProps) {
   if (loading) return <Text>Cargando servicios...</Text>
   if (error) return <Text c="red">Error: {error}</Text>
 
-  const mappedServices: ServiceCardProps[] = services.map((s: Service) => ({
-    idService: s.id,
-    nombre: s.name,
-    descripcion: s.description,
-  }))
-
-  const filteredServices = mappedServices.filter(service => {
+  const filteredServices = services.filter((service: Service) => {
     const query = searchQuery.toLowerCase()
-
     return (
-      service.nombre.toLowerCase().includes(query) ||
-      (service.descripcion?.toLowerCase().includes(query) ?? false)
+      service.name.toLowerCase().includes(query) ||
+      (service.description?.toLowerCase().includes(query) ?? false)
     )
   })
 
@@ -118,8 +104,8 @@ export function ServicesList({ searchQuery = '' }: ServicesListProps) {
 
   return (
     <>
-      {filteredServices.map(service => (
-        <ServiceCard key={service.idService} {...service} />
+      {filteredServices.map((service: Service) => (
+        <ServiceCard key={service.id} id={service.id} nombre={service.name} />
       ))}
     </>
   )
