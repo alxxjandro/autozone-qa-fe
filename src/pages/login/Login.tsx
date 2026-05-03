@@ -20,3 +20,15 @@ export function Login() {
     </>
   )
 }
+/* TODO
+ *  Agregar validación de credenciales (mocked)
+ *  Crear conexión con backend, Hook, model?, Error, consumir endpoint de login y servicio de autenticación
+ *  Agregar una animación de espera en lo que verifica credenciales
+ *  Agregar un mensaje de error en caso de credenciales incorrectas
+ *  Agregar un mensaje de éxito en caso de credenciales correctas
+ *  Agregar pruebas unitarias para el formulario de login
+ *  Agregar pruebas unitarias para archivo de validación de credenciales
+ *  Cambiar la ruta de home a login como ruta principal
+ *  COULD: verificar por SQLi
+ *  COULD: agregar animación de transición al verificar credenciales
+ */
