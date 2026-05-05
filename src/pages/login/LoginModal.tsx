@@ -4,6 +4,7 @@
  * TC3005B GPO500 - 2026
  * Autozone QA Automation
  */
+import './LoginModal.css'
 import { Button, Group, Modal, Stack, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks' // <-- Agregado
@@ -57,9 +58,9 @@ export function LoginModal() {
       opened={opened}
       onClose={close}
       title="Login into QA-zone"
-      centered
-      xOffset={0}
-      size="40%"
+      yOffset={175}
+      xOffset={150}
+      //size="40%"
       radius={16}
       padding="xl"
       overlayProps={{ backgroundOpacity: 0, blur: 0 }}
